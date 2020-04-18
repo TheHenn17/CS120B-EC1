@@ -26,16 +26,271 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-# Example test:
-test "PINA: 0x00, PINB: 0x00 => PORTC: 0"
-# Set inputs
-setPINA 0x00
-setPINB 0x00
-# Continue for several ticks
+test "Floor 1 -> 3"
+set state = Open
+set floor = 0x01
+
+setPINA 0x40
 continue 2
-# Set expect values
-expectPORTC 0
-# Check pass/fail
+expectPORTB 0x00
+expect state FinishClose
+expect floor 0x01
+
+setPINA 0x00
+continue 2
+expectPORTB 0x20
+expect state Closed
+expect floor 0x01
+
+setPINA 0x01
+continue 2
+expectPORTB 0x20
+expect state Closed
+expect floor 0x01
+
+setPINA 0x04
+continue 2
+expectPORTB 0x64
+expect state WaitZero
+expect floor 0x01
+
+setPINA 0x00
+continue 2
+expectPORTB 0x64
+expect state WaitComplete
+expect floor 0x01
+
+setPINA 0x80
+continue 2
+expectPORTB 0x64
+expect state FinishComplete
+expect floor 0x01
+
+setPINA 0x00
+continue 2
+expectPORTB 0x64
+expect state WaitComplete
+expect floor 0x02
+
+setPINA 0x80
+continue 2
+expectPORTB 0x64
+expect state FinishComplete
+expect floor 0x02
+
+setPINA 0x00
+continue 2
+expectPORTB 0x00
+expect state Open
+expect floor 0x04
+
+checkResult
+
+test "Floor 5 -> 3"
+set state = Open
+set floor = 0x10
+
+setPINA 0x40
+continue 2
+expectPORTB 0x00
+expect state FinishClose
+expect floor 0x10
+
+setPINA 0x00
+continue 2
+expectPORTB 0x20
+expect state Closed
+expect floor 0x10
+
+setPINA 0x10
+continue 2
+expectPORTB 0x20
+expect state Closed
+expect floor 0x10
+
+setPINA 0x04
+continue 2
+expectPORTB 0xA4
+expect state WaitZero
+expect floor 0x10
+
+setPINA 0x00
+continue 2
+expectPORTB 0xA4
+expect state WaitComplete
+expect floor 0x10
+
+setPINA 0x80
+continue 2
+expectPORTB 0xA4
+expect state FinishComplete
+expect floor 0x10
+
+setPINA 0x00
+continue 2
+expectPORTB 0xA4
+expect state WaitComplete
+expect floor 0x08
+
+setPINA 0x80
+continue 2
+expectPORTB 0xA4
+expect state FinishComplete
+expect floor 0x08
+
+setPINA 0x00
+continue 2
+expectPORTB 0x00
+expect state Open
+expect floor 0x04
+
+checkResult
+
+test "More than two buttons with closed door --> nothing happens"
+set state = Closed
+set floor = 0x80
+
+setPINA 0x05
+continue 2
+expectPORTB 0x20
+expect state Closed
+expect floor 0x80
+
+setPINA 0x06
+continue 2
+expectPORTB 0x20
+expect state Closed
+expect floor 0x80
+
+setPINA 0x03
+continue 2
+expectPORTB 0x20
+expect state Closed
+expect floor 0x80
+
+setPINA 0x18
+continue 2
+expectPORTB 0x20
+expect state Closed
+expect floor 0x80
+
+setPINA 0x07
+continue 2
+expectPORTB 0x20
+expect state Closed
+expect floor 0x80
+
+checkResult
+
+test "buttons while door open --> nothing happens"
+set state = Open
+set floor = 0x02
+
+setPINA 0x01
+continue 2
+expectPORTB 0x20
+expect state Open
+expect floor 0x02
+
+setPINA 0x02
+continue 2
+expectPORTB 0x20
+expect state Open
+expect floor 0x02
+
+setPINA 0x04
+continue 2
+expectPORTB 0x20
+expect state Open
+expect floor 0x02
+
+setPINA 0x08
+continue 2
+expectPORTB 0x20
+expect state Open
+expect floor 0x02
+
+setPINA 0x10
+continue 2
+expectPORTB 0x20
+expect state Open
+expect floor 0x02
+
+checkResult
+
+test "Correct button lights + WaitZero Transition"
+set state = Closed
+set floor = 0x80
+
+setPINA 0x01
+continue 2
+expectPORTB 0xA1
+expect state WaitZero
+expect floor 0x80
+
+set state = Closed
+set floor = 0x80
+
+setPINA 0x02
+continue 2
+expectPORTB 0xA2
+expect state WaitZero
+expect floor 0x80
+
+set state = Closed
+set floor = 0x01
+
+setPINA 0x02
+continue 2
+expectPORTB 0x62
+expect state WaitZero
+expect floor 0x01
+
+set state = Closed
+set floor = 0x80
+
+setPINA 0x04
+continue 2
+expectPORTB 0xA4
+expect state WaitZero
+expect floor 0x80
+
+set state = Closed
+set floor = 0x01
+
+setPINA 0x04
+continue 2
+expectPORTB 0x64
+expect state WaitZero
+expect floor 0x01
+
+set state = Closed
+set floor = 0x10
+
+setPINA 0x08
+continue 2
+expectPORTB 0xA8
+expect state WaitZero
+expect floor 0x10
+
+set state = Closed
+set floor = 0x01
+
+setPINA 0x08
+continue 2
+expectPORTB 0x68
+expect state WaitZero
+expect floor 0x01
+
+set state = Closed
+set floor = 0x01
+
+setPINA 0x10
+continue 2
+expectPORTB 0x70
+expect state WaitZero
+expect floor 0x01
+
 checkResult
 
 # Add tests below

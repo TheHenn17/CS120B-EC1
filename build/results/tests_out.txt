@@ -1,0 +1,7 @@
+Breakpoint 1 at 0x352: file source/main.c, line 109.
+Note: automatically using hardware breakpoints for read-only addresses.
+======================================================
+Running all tests..."
+
+"Floor 1 -> 3"..."Floor 5 -> 3"..."More than two buttons with closed door --> nothing happens"..."buttons while door open --> nothing happens"..."Correct button lights + WaitZero Transition"...======================================================
+Remote doesn't know how to detach
