@@ -3,5 +3,5 @@ Note: automatically using hardware breakpoints for read-only addresses.
 ======================================================
 Running all tests..."
 
-"Floor 1 -> 3"..."Floor 5 -> 3"..."More than two buttons with closed door --> nothing happens"..."buttons while door open --> nothing happens"..."Correct button lights + WaitZero Transition"...======================================================
+"Elevator Up: Floor 1 -> 3"..."Elevator Down: Floor 5 -> 3"..."More than two buttons with closed door --> nothing happens"..."buttons while door open --> nothing happens"..."Correct button lights + WaitZero Transition"..."WaitZero to WaitComplete"..."WaitComplete to FinishComplete"..."FinishComplete to Down to WaitComplete"..."FinishComplete to Up to WaitComplete"...======================================================
 Remote doesn't know how to detach

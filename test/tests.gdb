@@ -26,7 +26,7 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "Floor 1 -> 3"
+test "Elevator Up: Floor 1 -> 3"
 set state = Open
 set floor = 0x01
 
@@ -86,7 +86,7 @@ expect floor 0x04
 
 checkResult
 
-test "Floor 5 -> 3"
+test "Elevator Down: Floor 5 -> 3"
 set state = Open
 set floor = 0x10
 
@@ -290,6 +290,156 @@ continue 2
 expectPORTB 0x70
 expect state WaitZero
 expect floor 0x01
+
+checkResult
+
+test "WaitZero to WaitComplete"
+set state = Closed
+set floor = 0x08
+
+setPINA 0x01
+continue 2
+expectPORTB 0xA1
+expect state WaitZero
+expect floor 0x08
+
+setPINA 0x03
+continue 2
+expectPORTB 0xA1
+expect state WaitZero
+expect floor 0x08
+
+setPINA 0x04
+continue 2
+expectPORTB 0xA1
+expect state WaitZero
+expect floor 0x08
+
+setPINA 0x00
+continue 2
+expectPORTB 0xA1
+expect state WaitComplete
+expect floor 0x08
+
+checkResult
+
+test "WaitComplete to FinishComplete"
+set state = Closed
+set floor = 0x08
+
+setPINA 0x01
+continue 2
+expectPORTB 0xA1
+expect state WaitZero
+expect floor 0x08
+
+setPINA 0x00
+continue 2
+expectPORTB 0xA1
+expect state WaitComplete
+expect floor 0x08
+
+setPINA 0x04
+continue 2
+expectPORTB 0xA1
+expect state WaitComplete
+expect floor 0x08
+
+setPINA 0x07
+continue 2
+expectPORTB 0xA1
+expect state WaitComplete
+expect floor 0x08
+
+setPINA 0xA0
+continue 2
+expectPORTB 0xA1
+expect state FinishComplete
+expect floor 0x08
+
+checkResult
+
+test "FinishComplete to Down to WaitComplete"
+set state = Closed
+set floor = 0x08
+
+setPINA 0x01
+continue 2
+expectPORTB 0xA1
+expect state WaitZero
+expect floor 0x08
+
+setPINA 0x00
+continue 2
+expectPORTB 0xA1
+expect state WaitComplete
+expect floor 0x08
+
+setPINA 0x80
+continue 2
+expectPORTB 0xA1
+expect state FinishComplete
+expect floor 0x08
+
+setPINA 0x97
+continue 2
+expectPORTB 0xA1
+expect state FinishComplete
+expect floor 0x08
+
+setPINA 0xA0
+continue 2
+expectPORTB 0xA1
+expect state FinishComplete
+expect floor 0x08
+
+setPINA 0x03
+continue 2
+expectPORTB 0xA1
+expect state WaitComplete
+expect floor 0x04
+
+checkResult
+
+test "FinishComplete to Up to WaitComplete"
+set state = Closed
+set floor = 0x02
+
+setPINA 0x10
+continue 2
+expectPORTB 0x70
+expect state WaitZero
+expect floor 0x02
+
+setPINA 0x00
+continue 2
+expectPORTB 0x70
+expect state WaitComplete
+expect floor 0x02
+
+setPINA 0x80
+continue 2
+expectPORTB 0x70
+expect state FinishComplete
+expect floor 0x02
+
+setPINA 0x97
+continue 2
+expectPORTB 0x70
+expect state FinishComplete
+expect floor 0x02
+
+setPINA 0xA0
+continue 2
+expectPORTB 0x70
+expect state FinishComplete
+expect floor 0x02
+
+setPINA 0x03
+continue 2
+expectPORTB 0x70
+expect state WaitComplete
+expect floor 0x04
 
 checkResult
 
